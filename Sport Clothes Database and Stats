@@ -1,0 +1,33 @@
+---Create a Sport Clothes Database
+
+CREATE TABLE sport_clothes(id INTEGER PRIMARY KEY, name TEXT, color TEXT, size INTEGER, price INTEGER);
+INSERT INTO sport_clothes VALUES(1, "Nike Sneakers", "Black", 9, 120);
+INSERT INTO sport_clothes VALUES(2, "Miami heat hoodie", "Red", 12, 90);
+INSERT INTO sport_clothes VALUES(3, "Basketball shirt", "Blue", 8, 60);
+INSERT INTO sport_clothes VALUES(4, "Liverpool hersey", "red", 6, 130);
+INSERT INTO sport_clothes VALUES(5, "Woven shorts", "black", 4, 55);
+INSERT INTO sport_clothes VALUES(6, "Woven jacket", "Dark blue", 10, 85);
+INSERT INTO sport_clothes VALUES(7, "Woven joggers", "Grey", 12, 70);
+INSERT INTO sport_clothes VALUES(8, "Sweatpants", "White", 8, 59);
+INSERT INTO sport_clothes VALUES(9, "White cap", "White", 4, 20);
+INSERT INTO sport_clothes VALUES(10, "Bike gloves", "Black", 8, 40);
+INSERT INTO sport_clothes VALUES(11, "Sweat bands", "green", 4, 14);
+INSERT INTO sport_clothes VALUES(12, "Buff", "Blue-night", 5, 19);
+INSERT INTO sport_clothes VALUES(13, "Sweat jacket", "red", 10, 96);
+INSERT INTO sport_clothes VALUES(14, "Night polo", "White", 8, 61);
+INSERT INTO sport_clothes VALUES(15, "Nike trainers", "Black", 10, 110);
+
+---Display the database by price.
+SELECT * FROM sport_clothes ORDER BY price;
+
+---What is the maximum price in the sport clothes database?
+SELECT Max(price) FROM sport_clothes;
+
+---What is the minimum price in the sport clothes database?
+SELECT Min(price) FROM sport_clothes;
+
+---What is the minimum price in the sport clothes database?
+SELECT Avg(price) FROM sport_clothes;
+
+--- What are the 4 items more expensive in the sport clothes database?
+SELECT name, color, price FROM sport_clothes ORDER BY price DESC LIMIT 4;
