@@ -1,0 +1,37 @@
+CREATE TABLE best_tennis_players(id INTEGER PRIMARY KEY, name TEXT, nationality TEXT, age INTEGER, rank INTEGER);
+INSERT INTO best_tennis_players VALUES(1, "Novak Djokovic", "Serbian", 35, 1);
+INSERT INTO best_tennis_players VALUES(2, "Rafael Nadal", "Spanish", 36, 4);
+INSERT INTO best_tennis_players VALUES(3, "Sascha Zverev", "German", 25, 3);
+INSERT INTO best_tennis_players VALUES(4, "Stefanos Tsitsipas", "Greek", 23, 5);
+INSERT INTO best_tennis_players VALUES(5, "Danil Medvedev", "Russian", 26, 2);
+
+CREATE TABLE roland_garros(id INTEGER PRIMARY KEY, stage_id TEXT, games_played INTEGER);
+INSERT INTO roland_garros VALUES(1, "quartes finals", 5);
+INSERT INTO roland_garros VALUES(2, "final", 6);
+INSERT INTO roland_garros VALUES(3, "semi-finals", 6);
+INSERT INTO roland_garros VALUES(4, "eighth finals", 4);
+INSERT INTO roland_garros VALUES(5, "eithth finals", 4);
+
+CREATE TABLE tennis_players_hobbies(id INTEGER PRIMARY KEY, name TEXT, hobbie TEXT);
+INSERT INTO tennis_players_hobbies VALUES(1, "Novak Djokovic", "skiing");
+INSERT INTO tennis_players_hobbies VALUES(2, "Rafael Nadal", "Fishing");
+INSERT INTO tennis_players_hobbies VALUES(3, "Sascha Zverev", "Video games");
+INSERT INTO tennis_players_hobbies VALUES(4, "Stefanos Tsitsipas", "traveling");
+INSERT INTO tennis_players_hobbies VALUES(5, "Danil Medvedev", "Traveling");
+
+---What are the tennis players hobbies?  ---This is an example of self join table.--
+SELECT tennis_players_hobbies.name, N.hobbie FROM tennis_players_hobbies
+     JOIN tennis_players_hobbies N
+     ON tennis_players_hobbies.id=N.id;
+
+---What is the name, rank and stage id of the tennis players? ---This is the join of two tables.---
+SELECT name, rank, stage_id FROM best_tennis_players
+     JOIN roland_garros
+     ON best_tennis_players.id=roland_garros.id;
+     
+---What is the name, stage id and number of games played for the tennis players?--- This is a multiple join use.---
+SELECT name, roland_garros.stage_id, a.games_played FROM best_tennis_players
+     JOIN roland_garros
+     ON best_tennis_players.id=roland_garros.id
+     JOIN roland_garros a
+     ON roland_garros.id=a.id;
