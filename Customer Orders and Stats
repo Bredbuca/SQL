@@ -1,0 +1,70 @@
+#In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data. 
+
+#1. How many orders were placed in January?
+SELECT COUNT(orderID)
+FROM BIT_DB.JanSales 
+WHERE length(orderID) = 6 AND orderID <> " Order ID ";
+
+#2. How many of those orders were for an iPhone? 
+SELECT COUNT(orderID)
+FROM BIT_DB.JanSales 
+WHERE length(orderID) = 6 AND orderID <> " Order ID " AND product = "iPhone";
+
+#3. Select the customer account numbers for all the orders that were placed in February.
+SELECT acctnum 
+FROM BIT_DB.FebSales FS LEFT JOIN BIT_DB.customers C
+ON C.order_id = FS.orderID 
+WHERE length(orderID) = 6 AND orderID <> " Order ID ";
+
+#4. Which product was the cheapest one sold in January, and what was the price?
+SELECT DISTINCT Product,price FROM BIT_DB.JanSales WHERE price IN (SELECT MIN(price) FROM BIT_DB.JanSales) ;
+SELECT distinct product, MIN(price) 
+FROM BIT_DB.JanSales Jan 
+GROUP BY product, price 
+ORDER BY price ASC LIMIT 1;
+
+#5. What is the total revenue for each product sold in January?
+SELECT product, SUM(Quantity)*price as Revenue 
+FROM BIT_DB.JanSales GROUP BY product; 
+
+#6. Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+SELECT product, quantity, SUM(Quantity)*price as Revenue 
+FROM BIT_DB.FebSales 
+WHERE location LIKE '548 lincoln St, Seattle, WA 98101';
+
+#7. How many customers ordered more than 2 products at a time, and what was the average amount spent for those customers? 
+SELECT COUNT(DISTINCT customers.acctnum), AVG(quantity*price) 
+FROM BIT_DB.customers JOIN BIT_DB.FebSales 
+ON order_id= orderID
+WHERE Quantity > 2 
+AND length(orderID) = 6 AND orderID <> " Order ID ";
+
+#8 What order date is in 02/13/19 00:00 and 02/18/19 00:00 ?
+SELECT orderdate
+FROM BIT_DB.FebSales
+WHERE orderdate between '02/13/19 00:00' AND '02/18/19 00:00';
+
+#9 What is the location of the order date 02/18/19 and time: 01:35?
+SELECT location
+FROM BIT_DB.FebSales 
+WHERE orderdate = '02/18/19 01:35';
+
+#10 How many products were sold in 02/18/19?
+SELECT sum(quantity)
+FROM BIT_DB.FebSales 
+WHERE orderdate like '02/18/19%';
+
+#11 What are the products with the name: Batteries in February?
+SELECT distinct Product
+FROM BIT_DB.FebSales
+WHERE Product like '%Batteries%';
+
+#12 Which are the products and prices with the end value .99 in February?
+SELECT distinct Product, Price
+FROM BIT_DB.FebSales 
+WHERE Price like '%.99';
+
+#13 List all the products sold in Los Angeles in February, and include how many of each were sold.
+SELECT product, SUM(quantity)
+FROM BIT_DB.FebSales
+WHERE location LIKE '%los Angeles%' GROUP BY product;
