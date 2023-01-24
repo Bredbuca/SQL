@@ -1,0 +1,57 @@
+# For this project, I downloaded Spotify data from Kaggle.
+# Then I created a table to insert Spotify data into.
+# Finally, I performed analytics on the data using SQL. 
+
+#Creating the table: 
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+#Then I inserted the Spotify Data .csv into the table.
+
+#Next, I explored the data using the following SQL. 
+
+#1 I determined which are the three most popular artists and tracks.
+SELECT artist_name, track_name FROM BIT_DB.Spotifydata 
+ORDER BY popularity DESC LIMIT 3;
+
+#2 What is the track name and danceability when the duration is upper 200000?
+SELECT track_name, danceability FROM BIT_DB.Spotifydata 
+WHERE duration_ms > 200000;
+
+#3 What is the average liveness ?
+SELECT AVG(liveness) FROM BIT_DB.Spotifydata;
+
+#4 What is the track id and track name with less loudness and speechiness?
+SELECT track_id, track_name FROM BIT_DB.Spotifydata 
+ORDER BY loudness AND speechiness ASC LIMIT 1; 
+
+#5 What is the track id, track name and instrumentalness if instrumentalness values are betwwen 3 and 6?
+SELECT track_name, track_id, instrumentalness FROM BIT_DB.Spotifydata
+WHERE instrumentalness BETWEEN 3 AND 6;
+
+#6 What is the track name with the highest popularity?
+SELECT track_name, popularity FROM BIT_DB.Spotifydata ORDER BY popularity DESC LIMIT 1;
+
+#7 What is the track name and energy level for the most popular with hightest energy?
+SELECT track_name, energy FROM BIT_DB.Spotifydata 
+WHERE popularity=(SELECT popularity FROM BIT_DB.Spotifydata ORDER BY popularity DESC LIMIT 1) 
+ORDER BY energy DESC LIMIT 1;
+
