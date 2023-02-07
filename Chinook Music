@@ -1,0 +1,141 @@
+#This is a music artist proyect with sales data.
+
+#1 
+Show Customers (their full names, customer ID, and country) who are not in the US. 
+
+SELECT FirstName, LastName, CustomerId, Country FROM chinook.customers WHERE Country <> 'USA';
+
+
+#2 
+Show only the Customers from Brazil.
+
+SELECT * FROM chinook.customers WHERE Country='Brazil';
+
+
+#3 
+Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+
+SELECT FirstName, LastName, InvoiceId, InvoiceDate, BillingCountry FROM chinook.customers
+JOIN chinook.invoices
+ON chinook.customers.CustomerId = chinook.invoices.CustomerId
+WHERE Country = 'Brazil';
+
+#4 
+Show the Employees who are Sales Agents.
+
+SELECT * FROM chinook.employees WHERE Title LIKE '%sales%%agent%';
+
+#5 
+Find a unique list of billing countries from the Invoice table.
+
+SELECT DISTINCT BillingCountry FROM chinook.invoices;
+
+#6 
+Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+
+SELECT emp.LastName, emp.Firstname, inv.InvoiceId
+FROM chinook.Employees emp 
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId;
+
+#7 
+Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+
+SELECT cust.FirstName, cust.LastName, cust.Country, emp.FirstName, emp.LastName, inv.Total FROM chinook.invoices inv
+JOIN chinook.customers cust
+ON cust.CustomerId=inv.CustomerId
+JOIN chinook.employees emp
+ON emp.EmployeeId=cust.SupportRepId;
+
+#8
+How many Invoices were there in 2009?
+
+SELECT COUNT(*)FROM chinook.invoices inv
+WHERE inv.InvoiceDate LIKE '%2009%';
+
+#9
+What are the total sales for 2009?
+
+SELECT SUM(UnitPrice*Quantity)sales FROM chinook.invoice_items sales
+JOIN chinook.invoices inv
+ON inv.InvoiceId=sales.InvoiceId
+WHERE inv.InvoiceDate LIKE '%2009%';
+
+#10
+Write a query that includes the purchased track name with each invoice line ID.
+
+SELECT tr.Name, i.InvoiceLineId FROM chinook.invoice_items i
+JOIN chinook.tracks tr
+ON tr.TrackId=i.TrackId;
+
+#11
+Write a query that includes the purchased track name AND artist name with each invoice line ID.
+
+SELECT art.Name as Artist, tr.Name as Track, i.InvoiceLineId FROM chinook.artists art
+JOIN chinook.albums alb
+ON alb.ArtistId=art.ArtistId
+JOIN chinook.tracks tr
+ON tr.AlbumId=alb.AlbumId
+JOIN chinook.invoice_items i
+ON i.TrackId=tr.TrackId;
+
+#12
+Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+
+SELECT t.Name as 'Track Name', al.Title as 'Album Title', mt.Name as 'Media Type',g.Name as 'Genre'
+FROM chinook.albums al
+JOIN chinook.tracks t
+ON al.AlbumId=t.AlbumId
+JOIN chinook.media_types mt
+ON t.MediaTypeId=mt.MediaTypeId
+JOIN chinook.genres g
+ON t.GenreId=g.GenreId;
+
+#13
+Show the total sales made by each sales agent.
+
+SELECT emp.FirstName, emp.LastName, ROUND(SUM(inv.Total),2) as Total_Sales
+FROM chinook.invoices inv
+JOIN chinook.customers cust
+ON inv.CustomerId=cust.CustomerId
+JOIN chinook.employees emp
+ON cust.SupportRepId=EmployeeId
+WHERE emp.Title LIKE '%Sales%%Agent%'
+GROUP BY emp.FirstName;
+
+#14
+Which sales agent made the most dollars in sales in 2009?
+
+SELECT emp.FirstName, emp.LastName, ROUND(SUM(inv.Total),2) AS Total_Sales
+FROM chinook.invoices inv
+JOIN chinook.customers cust
+ON inv.CustomerId=cust.CustomerId
+JOIN chinook.employees emp
+ON cust.SupportRepId=EmployeeId
+WHERE emp.Title LIKE '%Sales%%Agent%' AND inv.InvoiceDate LIKE '%2009%'
+GROUP BY emp.FirstName
+ORDER BY ROUND(SUM(inv.Total),2) DESC LIMIT 1; 
+
+#15 
+Customers fullname and phone from the NewYork city
+
+SELECT FirstName, LastName, City, Phone FROM chinook.customers
+WHERE City= 'New York';
+
+#16
+Track names with bytes between 6000000 and 6005000.
+
+SELECT Name, Bytes FROM chinook.tracks WHERE Bytes BETWEEN  6000000 AND 6005000;
+
+
+
+
+
+
+
+
+
+
+
+
+
